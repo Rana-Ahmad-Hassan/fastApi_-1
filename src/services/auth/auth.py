@@ -2,6 +2,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi import HTTPException
 from starlette.status import HTTP_403_FORBIDDEN
 from sqlmodel import select
+from src.schemas.userSchema import UserSchema, login_user
 
 from src.models.user import User
 from typing import Any, Dict
@@ -12,7 +13,7 @@ hash_password = HashPassword()
 
 
 class AuthServices:
-    async def create_user(self, userData: Any, session: AsyncSession) -> User:
+    async def create_user(self, userData: UserSchema, session: AsyncSession) -> UserSchema:
         user_data_dict = userData.model_dump()
 
         # Hash the password before saving
@@ -35,7 +36,7 @@ class AuthServices:
 
         return new_user
 
-    async def login_user(self, userData: Any, session: AsyncSession) -> Dict[str, Any]:
+    async def login_user(self, userData: login_user, session: AsyncSession) -> Dict[str, Any]:
         user_data_dict = userData.model_dump()
         email = user_data_dict.get("email")
         password = user_data_dict.get("password")
