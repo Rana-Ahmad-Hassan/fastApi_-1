@@ -7,9 +7,10 @@ from src.schemas.userSchema import UserSchema, login_user
 from src.models.user import User
 from typing import Any, Dict
 import secrets  # better for generating tokens
-from src.utils.security import HashPassword
+from src.utils.security import HashPassword, generateJwtTokens
 
 hash_password = HashPassword()
+jwt_tokens = generateJwtTokens()
 
 
 class AuthServices:
@@ -56,8 +57,11 @@ class AuthServices:
                 status_code=HTTP_403_FORBIDDEN, detail="Invalid credentials."
             )
 
-        token = secrets.token_hex(16)
+        token = jwt_tokens.create_access_token(
+            data={"sub": str(existing_user.id)}  # or "email": existing_user.email if preferred
+        )
         return {
             "token": token,
+            "type": "Bearer",
             "user": existing_user,
         }

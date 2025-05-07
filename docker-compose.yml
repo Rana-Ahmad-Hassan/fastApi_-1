@@ -2,16 +2,16 @@ version: "3"
 
 services:
   fastapi1:
-    image: fastapi-app:latest
+    image: fastapi:latest
     container_name: fastapi1
     ports:
-      - "8003:8002"  # Exposing 8003 on host for fastapi1
+      - "8003:8002"
 
   fastapi2:
-    image: fastapi-app:latest
+    image: fastapi:latest
     container_name: fastapi2
     ports:
-      - "8004:8002"  # Exposing 8004 on host for fastapi2
+      - "8004:8002"
 
   nginx:
     image: nginx:latest
